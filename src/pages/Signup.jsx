@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-// const API = "http://localhost:8000";
 const API = import.meta.env.VITE_BACKEND_API_URL;
 
 export default function Signup() {
@@ -15,31 +14,42 @@ export default function Signup() {
     if (!name || !phone || !email || !password) {
       alert("All fields are required");
       return;
-    }  
+    }
 
-    await fetch(`${API}/auth/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        phone,
-        email,
-        password,
-      }),
-    });
+    try {
+      const res = await fetch(`${API}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          password,
+        }),
+      });
 
-    alert("Registered successfully");
-    navigate("/login");
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.detail || "Signup failed");
+        return;
+      }
+
+      alert("Registered successfully");
+      navigate("/login");
+    } catch (err) {
+      console.error("Signup error:", err);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-100 text-black">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
         <h1 className="mb-6 text-center text-2xl font-bold">Signup</h1>
 
         <div className="flex flex-col gap-4">
           <input
-            className="rounded-md border px-3 py-2"
+            className="rounded-md border px-3 py-2 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -47,7 +57,7 @@ export default function Signup() {
 
           <input
             type="tel"
-            className="rounded-md border px-3 py-2"
+            className="rounded-md border px-3 py-2 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Phone Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -55,7 +65,7 @@ export default function Signup() {
 
           <input
             type="email"
-            className="rounded-md border px-3 py-2"
+            className="rounded-md border px-3 py-2 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +73,7 @@ export default function Signup() {
 
           <input
             type="password"
-            className="rounded-md border px-3 py-2"
+            className="rounded-md border px-3 py-2 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -71,7 +81,7 @@ export default function Signup() {
 
           <button
             onClick={register}
-            className="rounded-md bg-green-600 py-2 font-medium text-white hover:bg-green-700"
+            className="rounded-md bg-green-600 py-2 font-medium text-white hover:bg-green-700 transition"
           >
             Signup
           </button>

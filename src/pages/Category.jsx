@@ -14,7 +14,6 @@ export default function Category() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ✅ AI Modal State
   const [showModal, setShowModal] = useState(false);
   const [step, setStep] = useState(1);
   const [expenseInput, setExpenseInput] = useState("");
@@ -28,7 +27,6 @@ export default function Category() {
   const fetchCategories = async () => {
     try {
       const res = await fetch(`${API}/categories`, {
-        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -45,7 +43,6 @@ export default function Category() {
     fetchCategories();
   }, []);
 
-  // ✅ Create Category
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -72,7 +69,6 @@ export default function Category() {
     }
   };
 
-  // ✅ AI Search
   const handleSearch = async () => {
     if (!expenseInput.trim()) return;
 
@@ -89,9 +85,9 @@ export default function Category() {
 
       const data = await res.json();
       const parsedCategories = data.response
-      .split(",")
-      .map((item) => item.trim());
-      // console.log('data', data.response)
+        .split(",")
+        .map((item) => item.trim());
+
       setAiCategories(parsedCategories || []);
       setStep(2);
     } catch {
@@ -101,12 +97,10 @@ export default function Category() {
     }
   };
 
-  // ✅ Select category from AI
   const handleSelectCategory = () => {
     setName(selectedCategory);
     setShowModal(false);
 
-    // reset modal
     setStep(1);
     setExpenseInput("");
     setSelectedCategory("");
@@ -114,15 +108,14 @@ export default function Category() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100">
+    <div className="min-h-screen w-full bg-gray-100 text-black">
       <Header user={{ name: user?.email }} />
 
-      <div className="w-full px-12 py-10">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+      <div className="w-full px-6 md:px-12 py-10">
+        <h2 className="text-3xl font-bold mb-6">
           Create Category
         </h2>
 
-        {/* ✅ AI Help Button */}
         <button
           type="button"
           onClick={() => setShowModal(true)}
@@ -143,26 +136,26 @@ export default function Category() {
           className="grid md:grid-cols-4 gap-6 items-end mb-14"
         >
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
+            <label className="block text-sm font-medium mb-1">
               Name
             </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full rounded-lg border px-4 py-2"
+              className="w-full rounded-lg border px-4 py-2 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter category name"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
+            <label className="block text-sm font-medium mb-1">
               Type
             </label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="w-full rounded-lg border px-4 py-2"
+              className="w-full rounded-lg border px-4 py-2 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="expense">Expense</option>
               <option value="income">Income</option>
@@ -179,19 +172,21 @@ export default function Category() {
           </button>
         </form>
 
-        {/* EXISTING CATEGORIES */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-6">
+        {/* LIST */}
+        <h3 className="text-xl font-semibold mb-6">
           Existing Categories
         </h3>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.length === 0 ? (
-            <div className="text-gray-500 text-sm">No categories yet</div>
+            <div className="text-gray-500 text-sm">
+              No categories yet
+            </div>
           ) : (
             categories.map((c) => (
               <div
                 key={c.id}
-                className="p-5 rounded-lg border bg-white"
+                className="p-5 rounded-lg border bg-white text-black"
               >
                 <div className="flex justify-between">
                   <span className="font-semibold">{c.name}</span>
@@ -211,12 +206,11 @@ export default function Category() {
         </div>
       </div>
 
-      {/* ✅ AI MODAL */}
+      {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-md rounded-xl p-6">
+          <div className="bg-white text-black w-full max-w-md rounded-xl p-6">
 
-            {/* STEP 1 */}
             {step === 1 && (
               <>
                 <h2 className="text-lg font-semibold mb-4">
@@ -226,14 +220,14 @@ export default function Category() {
                 <input
                   value={expenseInput}
                   onChange={(e) => setExpenseInput(e.target.value)}
-                  className="w-full border px-3 py-2 mb-4 rounded-lg"
+                  className="w-full border px-3 py-2 mb-4 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="e.g. Dinner at restaurant"
                 />
 
                 <div className="flex justify-end gap-3">
                   <button
                     onClick={() => setShowModal(false)}
-                    className="px-4 py-2 bg-gray-300 rounded-lg"
+                    className="px-4 py-2 bg-gray-300 text-black rounded-lg"
                   >
                     Cancel
                   </button>
@@ -249,37 +243,30 @@ export default function Category() {
               </>
             )}
 
-            {/* STEP 2 */}
             {step === 2 && (
               <>
                 <h2 className="text-lg font-semibold mb-4">
                   Select Category
                 </h2>
 
-                {aiCategories.length === 0 ? (
-                  <p className="text-sm text-gray-500 mb-4">
-                    No categories found
-                  </p>
-                ) : (
-                  <div className="space-y-2 mb-4">
-                    {aiCategories.map((cat, i) => (
-                      <label key={i} className="flex gap-2">
-                        <input
-                          type="radio"
-                          value={cat}
-                          checked={selectedCategory === cat}
-                          onChange={() => setSelectedCategory(cat)}
-                        />
-                        {cat}
-                      </label>
-                    ))}
-                  </div>
-                )}
+                <div className="space-y-2 mb-4">
+                  {aiCategories.map((cat, i) => (
+                    <label key={i} className="flex gap-2 items-center">
+                      <input
+                        type="radio"
+                        value={cat}
+                        checked={selectedCategory === cat}
+                        onChange={() => setSelectedCategory(cat)}
+                      />
+                      <span className="text-black">{cat}</span>
+                    </label>
+                  ))}
+                </div>
 
                 <div className="flex justify-between">
                   <button
                     onClick={() => setStep(1)}
-                    className="px-4 py-2 bg-gray-300 rounded-lg"
+                    className="px-4 py-2 bg-gray-300 text-black rounded-lg"
                   >
                     Back
                   </button>
