@@ -17,7 +17,7 @@ export default function Signup() {
       return;
     }  
 
-    await fetch(`${API}/register`, {
+    await fetch(`${API}/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
