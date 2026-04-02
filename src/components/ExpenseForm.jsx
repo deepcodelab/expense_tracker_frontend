@@ -29,8 +29,12 @@ export default function ExpenseForm({ categories, onSubmit }) {
     setDescription("");
   };
 
+  // ✅ SAME STYLE AS LOGIN PAGE
+  const inputClass =
+    "w-full bg-white text-black border border-gray-300 rounded-lg px-3 py-2 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500";
+
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md w-full">
+    <div className="bg-white text-black p-6 rounded-xl shadow-md w-full">
       <h2 className="text-xl font-semibold mb-6">Add Expense</h2>
 
       <form
@@ -47,7 +51,7 @@ export default function ExpenseForm({ categories, onSubmit }) {
             value={name}
             required
             onChange={(e) => setName(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
+            className={inputClass}
             placeholder="Dinner, Uber, etc"
           />
         </div>
@@ -62,7 +66,7 @@ export default function ExpenseForm({ categories, onSubmit }) {
             value={amount}
             required
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
+            className={inputClass}
             placeholder="100"
           />
         </div>
@@ -86,7 +90,7 @@ export default function ExpenseForm({ categories, onSubmit }) {
             value={categoryId}
             required
             onChange={(e) => setCategoryId(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
+            className={inputClass}
           >
             <option value="">Select</option>
             {categories.map((c) => (
@@ -97,7 +101,7 @@ export default function ExpenseForm({ categories, onSubmit }) {
           </select>
         </div>
 
-        {/* Date with datepicker */}
+        {/* Date */}
         <div>
           <label className="block text-sm font-medium mb-1">
             Date
@@ -107,7 +111,7 @@ export default function ExpenseForm({ categories, onSubmit }) {
             value={date}
             required
             onChange={(e) => setDate(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
+            className={inputClass}
           />
         </div>
 
@@ -119,7 +123,7 @@ export default function ExpenseForm({ categories, onSubmit }) {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
+            className={inputClass}
             placeholder="Optional notes"
           />
         </div>
