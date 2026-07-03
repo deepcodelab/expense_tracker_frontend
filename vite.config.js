@@ -7,4 +7,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    allowedHosts: [
+      "lula-mammillate-slobberingly.ngrok-free.dev", // your system IP
+      "localhost"
+    ]
+  }
 });

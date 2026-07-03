@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import FloatingAssistant from "../components/FloatingAssistant";
 
 const API = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -284,6 +285,7 @@ export default function Category() {
           </div>
         </div>
       )}
+      <FloatingAssistant />
     </div>
   );
 }
